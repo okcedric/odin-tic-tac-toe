@@ -11,7 +11,8 @@ body{
 header {
     align-items: center;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 1rem;
 }
 
 main {
@@ -38,6 +39,19 @@ main {
     font-size: 4rem;
     display: flex;
     justify-content: center;
+    cursor: pointer;
+}
+
+.cell.blue{
+    color : darkcyan;
+    cursor: default;
+}
+
+.cell.red{
+    color: tomato;
+    cursor: default;
+    font-size: 6rem;
+
 }
 
 footer{
