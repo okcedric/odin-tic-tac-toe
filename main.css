@@ -21,7 +21,7 @@ h2{
     flex-direction: column;
     font-size: 1.618rem;
     font-weight: 900;
-    padding-bottom: 6rem ;
+    padding: 6rem  0;
     justify-content: center;
 }
 
@@ -32,6 +32,7 @@ main {
     height: 100%;
     flex: 1;
     /* justify-content: center; */
+    position: relative;
 }
 
 #grid{
@@ -72,6 +73,35 @@ main {
 
 }    
 
+
+#overlay {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    color: antiquewhite;
+    height: 100%;
+    width: 100%;
+    background-color: #000000CC;
+    
+    
+}
+
+#overlay h2 {
+    font-size: 2.618rem;
+}
+
+#overlay.blue{
+    background-color: darkcyan;
+}
+
+#overlay.red{
+    background: tomato;
+}
+
+#overlay.hidden{
+    display: none;
+}
 
 
 footer{
