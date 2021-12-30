@@ -1,9 +1,13 @@
 const Gameboard = (function(){
     let _gameBoard = [];
     let _grid=document.querySelector('#grid');
-
+    
     
     function init() {
+        player1.isMyTurn = true;
+        showPlayer(player1);
+
+        
         for (let i= 0; i < 9; i++) {
             let cell = document.createElement('div');
             cell.classList.add('cell');
@@ -11,15 +15,31 @@ const Gameboard = (function(){
             _gameBoard.push("");
             _grid.appendChild(cell);
         }
-
+        
     }
+    
+    function showPlayer(player) {
+        let playerShower = document.querySelector('#player');
+        console.log(playerShower);
+        playerShower.innerHTML = player.sign;
+        if (player == player1) {
+            playerShower.classList.remove('blue');
+            playerShower.classList.add('red');
+        } else {
+            playerShower.classList.remove('red');
+            playerShower.classList.add('blue');
+            
+        }
+    }
+
+
     
     function render() {
         for (let i = 0; i < 9; i++) {
             if (_gameBoard[i]) {
                 let cell = _grid.querySelector(`[data-id = "${i}"]`);
                 cell.textContent = _gameBoard[i];
-                if (_gameBoard[i] == '×'){
+                if (_gameBoard[i] == '□'){
                     cell.classList.add('red');
                 } else {
                     cell.classList.add('blue');
@@ -57,7 +77,8 @@ const Gameboard = (function(){
         render,
         isFree,
         write,
-        events
+        events,
+        showPlayer
     }
 })();
 
@@ -84,16 +105,17 @@ const Player = (sign, name) => {
 const toggleTurn = () => {
     player1.isMyTurn = !(player1.isMyTurn);
     player2.isMyTurn = !(player2.isMyTurn);
+    if (player1.isMyTurn) Gameboard.showPlayer(player1);
+    if (player2.isMyTurn) Gameboard.showPlayer(player2);
     
 }
 
 const error = (message) => console.log(`ERROR : ${message}`);
 
-let player1 = Player("×");
+let player1 = Player("□");
 let player2 = Player('○', "okcedric");
 
 Gameboard.init();
 Gameboard.render();
 Gameboard.events();
-player1.isMyTurn = true;
 Gameboard.render();

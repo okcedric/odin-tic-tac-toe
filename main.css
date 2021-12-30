@@ -15,12 +15,23 @@ header {
     padding: 1rem;
 }
 
+h2{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.618rem;
+    font-weight: 900;
+    padding-bottom: 6rem ;
+    justify-content: center;
+}
+
 main {
     align-items: center;
     display: flex;
+    flex-direction: column;
     height: 100%;
     flex: 1;
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 #grid{
@@ -42,17 +53,26 @@ main {
     cursor: pointer;
 }
 
-.cell.blue{
+#player{
+    font-size: 6rem;
+    font-weight: 400;
+
+}
+
+
+#player.blue, .cell.blue{
     color : darkcyan;
     cursor: default;
-}
+}    
 
-.cell.red{
+
+#player.red, .cell.red{
     color: tomato;
     cursor: default;
-    font-size: 6rem;
 
-}
+}    
+
+
 
 footer{
     align-items: center;
