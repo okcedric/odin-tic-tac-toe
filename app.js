@@ -11,7 +11,6 @@ const Gameboard = (function(){
             let cell = document.createElement('div');
             cell.classList.add('cell');
             cell.setAttribute('data-id',i);
-            console.log(cell);
             _gameBoard.push("");
             _grid.appendChild(cell);
         }
@@ -36,40 +35,26 @@ const Gameboard = (function(){
     }
 
     function checkForWinner(){
-        
-        if(_gameBoard[4]){
-            if ((_gameBoard[4] == _gameBoard[0]) && (_gameBoard[4] == _gameBoard[8])) return _gameBoard[4];
-            if ((_gameBoard[4] == _gameBoard[1]) && (_gameBoard[4] == _gameBoard[7])) return _gameBoard[4];
-            if ((_gameBoard[4] == _gameBoard[2]) && (_gameBoard[4] == _gameBoard[6])) return _gameBoard[4];
-            if ((_gameBoard[4] == _gameBoard[3]) && (_gameBoard[4] == _gameBoard[5])) return _gameBoard[4];
-        };
-        if(_gameBoard[0]){
-            if ((_gameBoard[0] == _gameBoard[1]) && (_gameBoard[0] == _gameBoard[2])) return _gameBoard[0];
-            if ((_gameBoard[0] == _gameBoard[3]) && (_gameBoard[0] == _gameBoard[6])) return _gameBoard[0];
-                };
-        if(_gameBoard[8]){
-            if ((_gameBoard[8] == _gameBoard[2]) && (_gameBoard[8] == _gameBoard[5])) return _gameBoard[8];
-                    if ((_gameBoard[8] == _gameBoard[6]) && (_gameBoard[8] == _gameBoard[7])) return _gameBoard[8];
-                };
+        let isLine = (a,b,c) => (_gameBoard[a] == _gameBoard[b]) && (_gameBoard[a] == _gameBoard[c]) && (_gameBoard[a]);
 
-        
-                return false
+        if (isLine(4, 0, 8) || isLine(4, 1, 7) || isLine(4, 2, 6) || isLine(4, 3, 5 )) return _gameBoard[4];
+        if (isLine(0, 1, 2) || isLine(0, 3, 6)) return _gameBoard[0];
+        if (isLine(8, 5, 2) || isLine(8, 7, 6)) return _gameBoard[8];
+        return false
     }
     function checkForTie(){
         let cells = Array.from(_grid.querySelectorAll('.cell'));
-        return cells.every((cell)=> !!cell.textContent);
+        return cells.every((cell)=> cell.textContent);
     }
     
     function render() {
-        console.log('render');
         for (let i = 0; i < 9; i++) {
             let cell = _grid.querySelector(`[data-id = "${i}"]`);
-                console.log(cell)
                 cell.innerText = _gameBoard[i];
-                if (_gameBoard[i] == '□'){
-                    cell.classList.add('red');
-                } else {
+            if (_gameBoard[i] == '○'){
                     cell.classList.add('blue');
+                } else if (_gameBoard[i] == '□'){
+                    cell.classList.add('red');
                 }
             }
         }
@@ -123,9 +108,9 @@ const Player = (sign, name) => {
             toggleTurn();
         } 
         
-        error('Cette place est déjà prise');
         Gameboard.render();
         let winner = Gameboard.checkForWinner()
+        let tie = Gameboard.checkForTie();
         if(winner) {
             document.querySelector('#winner').textContent = winner + ' wins!';
             _overlay.classList.remove('hidden');
@@ -135,14 +120,13 @@ const Player = (sign, name) => {
                 _overlay.classList.add('blue');
                 
             }   
-        } 
-        
-        let tie = Gameboard.checkForTie();
-        if (tie) {
+        } else if (tie) {
             document.querySelector('#winner').textContent = 'It\'s a tie!';
             _overlay.classList.remove('hidden');
 
         }
+        
+       
     }
     
     let isMyTurn = false;
@@ -157,8 +141,6 @@ const Player = (sign, name) => {
 
 
 const toggleTurn = () => {
-    console.log(player1.isMyTurn);
-    console.log(player2.isMyTurn);
     player1.isMyTurn = !(player1.isMyTurn);
     player2.isMyTurn = !(player2.isMyTurn);
     if (player1.isMyTurn) Gameboard.showPlayer(player1);
