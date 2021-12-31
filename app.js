@@ -30,19 +30,23 @@ const Gameboard = (function(){
         } else {
             playerShower.classList.remove('red');
             playerShower.classList.add('blue');
-            
         }
     }
 
-    function checkForWinner(){
+    function isWinner(){
         let isLine = (a,b,c) => (_gameBoard[a] == _gameBoard[b]) && (_gameBoard[a] == _gameBoard[c]) && (_gameBoard[a]);
+        let whoPlayedHere = (position) => {
+            if (_gameBoard[position] == player1.sign)  return player1;
+            if (_gameBoard[position] == player2.sign)  return player2;
+        }
+        let winner = false;
 
-        if (isLine(4, 0, 8) || isLine(4, 1, 7) || isLine(4, 2, 6) || isLine(4, 3, 5 )) return _gameBoard[4];
-        if (isLine(0, 1, 2) || isLine(0, 3, 6)) return _gameBoard[0];
-        if (isLine(8, 5, 2) || isLine(8, 7, 6)) return _gameBoard[8];
-        return false
+        if (isLine(4, 0, 8) || isLine(4, 1, 7) || isLine(4, 2, 6) || isLine(4, 3, 5 )) winner = whoPlayedHere(4);
+        if (isLine(0, 1, 2) || isLine(0, 3, 6)) winner = whoPlayedHere(0);
+        if (isLine(8, 5, 2) || isLine(8, 7, 6)) winner = whoPlayedHere(8);
+        return winner
     }
-    function checkForTie(){
+    function isTie(){
         let cells = Array.from(_grid.querySelectorAll('.cell'));
         return cells.every((cell)=> cell.textContent);
     }
@@ -92,14 +96,12 @@ const Gameboard = (function(){
         write,
         events,
         showPlayer,
-        checkForWinner,
-        checkForTie,
+        isWinner,
+        isTie,
     }
 })();
 
 const Player = (sign, name) => {
-
-    if (!(name)) name = sign;
 
     const play = (position)=> {
 
@@ -109,10 +111,9 @@ const Player = (sign, name) => {
         } 
         
         Gameboard.render();
-        let winner = Gameboard.checkForWinner()
-        let tie = Gameboard.checkForTie();
+        let winner = Gameboard.isWinner()
         if(winner) {
-            document.querySelector('#winner').textContent = winner + ' wins!';
+            document.querySelector('#winner').textContent = winner.name + ' wins!';
             _overlay.classList.remove('hidden');
             if (winner == "□") {
                 _overlay.classList.add('red');
@@ -120,14 +121,14 @@ const Player = (sign, name) => {
                 _overlay.classList.add('blue');
                 
             }   
-        } else if (tie) {
+        } else if (Gameboard.isTie()) {
             document.querySelector('#winner').textContent = 'It\'s a tie!';
             _overlay.classList.remove('hidden');
 
         }
-        
-       
     }
+
+    const setName = (name) => this.name = name;
     
     let isMyTurn = false;
            
