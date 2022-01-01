@@ -1,9 +1,9 @@
 const Gameboard = (function(){
     let _gameBoard = [] ;
-    let _overlay = document.querySelector('#winner-overlay')
-    let _overlayPlayer1 = document.querySelector('#player1-overlay');
+    let _overlay = document.querySelector('#winner-overlay');
     let _renameButton1 = document.querySelector('#rename-1');
     let _renameButton2 = document.querySelector('#rename-2');
+    let _overlayPlayer1 = document.querySelector('#player1-overlay');
     let _overlayPlayer2 = document.querySelector('#player2-overlay');
     let _grid=document.querySelector('#grid');
     let _nameBoard = document.querySelector('.name-board');
@@ -26,11 +26,17 @@ const Gameboard = (function(){
             _gameBoard.push("");
             _grid.appendChild(cell);
         }
+        let input = _overlayPlayer1.querySelector('input');
+        input.value = player1.name;
+        input = _overlayPlayer2.querySelector('input');
+        input.value = player2.name
+        Manipulate.rename(player2, _overlayPlayer2);
+        Manipulate.rename(player1, _overlayPlayer1); 
         events();
         render();
         _overlay.classList.remove('blue');
         _overlay.classList.remove('red');
-        _overlay.classList.add('hidden');   
+        _overlay.classList.add('hidden'); 
     }
 
     function showPlayers() {
@@ -39,6 +45,8 @@ const Gameboard = (function(){
         _username1.textContent = player1.name;
         _username2.textContent = player2.name;
     }
+
+
 
     function playerToPlay() {
         return player1.isMyTurn ? player1 : player2
@@ -98,19 +106,8 @@ const Gameboard = (function(){
         showTurn();
     }
 
+   
 
-    function rename(player,name){
-
-        
-    }
-
-    function open(overlay) {
-        overlay.classList.remove('hidden');
-    }
-
-    function close(overlay) {
-        overlay.classList.add('hidden');
-    }
 
     
     function events() {
@@ -124,30 +121,19 @@ const Gameboard = (function(){
 
         _overlay.addEventListener('click', Gameboard.init);
 
-       _playerShower1.addEventListener('click', () => {
-                open(_overlayPlayer1);
-            });
+       _playerShower1.addEventListener('click', ()=>Manipulate.open(_overlayPlayer1));
             
-        _playerShower2.addEventListener('click', () => {
-                open(_overlayPlayer2);
-            });
+        _playerShower2.addEventListener('click', ()=>Manipulate.open(_overlayPlayer2));
 
-        _renameButton1.addEventListener('click', ()=> {
-            let name = _overlayPlayer1.querySelector('input').value;
-            name ? player1.setName(name) : player1.setName('Square');
-            console.log(player1.name)
-            close(_renameButton1.parentElement);
-            render();
-        })
+        _renameButton1.addEventListener('click',() => Manipulate.rename(player1,_overlayPlayer1))
         
-        _renameButton2.addEventListener('click', ()=> {
-            let name = _overlayPlayer2.querySelector('input').value;
-            name ? player2.setName(name) : player2.setName('Circle');
-            console.log(player2.name)
-            close(_renameButton2.parentElement);
-            render();
-        })
+        _renameButton2.addEventListener('click', ()=>Manipulate.rename(player2,_overlayPlayer2))
 
+        document.addEventListener('keydown', (e) => Manipulate.whenEnter(e));
+
+        //document.addEventListener('keydown',()=> Manipulate.whenEnter());
+        
+       
     }
     
     function isFree(position) {
@@ -163,7 +149,6 @@ const Gameboard = (function(){
         render,
         isFree,
         write,
-        open,
         events,
         showTurn,
         toggleTurn,
@@ -173,12 +158,65 @@ const Gameboard = (function(){
     }
 })();
 
-const Player = (sign, name) => {
 
+const Manipulate = function () {
+    let _overlayPlayer1 = document.querySelector('#player1-overlay');
+    let _overlayPlayer2 = document.querySelector('#player2-overlay');
+    let _overlay = document.querySelector('#winner-overlay');
+    function close(overlay) {
+        overlay.classList.add('hidden');
+    }
+    function open(overlay) {
+        overlay.classList.remove('hidden');
+        let input = overlay.querySelector('input');
+        if (input) {
+           input.focus();
+        }
+    }
+    function rename(player, overlay) {
+        let name = overlay.querySelector('input').value;
+        name ? player.setName(name) : error('a girl has no name');
+        close(overlay);
+        Gameboard.render();
+    }
+
+    function _isOpen(overlay) {
+        return(!overlay.classList.contains('hidden'))
+    }
+
+    
+
+    function whenEnter(e){
+        if (e.keyCode == "13"){
+            console.log('Enter');
+            if (_isOpen(_overlayPlayer1)) {
+                rename(player1,_overlayPlayer1)
+                close(_overlayPlayer1);
+            }
+            if (_isOpen(_overlayPlayer2))  {
+                rename(player2,_overlayPlayer2)
+                close(_overlayPlayer2);
+            }
+
+            if(_isOpen(_overlay)){
+                Gameboard.init();
+                close(_overlay)
+            }
+        }
+            
+        }
+    return {
+        close,
+        open,
+        rename,
+        whenEnter,
+    }
+
+}();
+
+const Player = (sign, name) => {
     const play = (position)=> {
         let _overlay = document.querySelector('#winner-overlay');
-
-
         if (Gameboard.isFree(position)){
             Gameboard.write(position, sign)
             Gameboard.toggleTurn();
@@ -188,7 +226,7 @@ const Player = (sign, name) => {
         let winner = Gameboard.isWinner()
         if(winner) {
             document.querySelector('#winner').textContent = winner.name + ' wins!';
-            Gameboard.open(_overlay);
+            Manipulate.open(_overlay);
             if (winner.sign == "□") {
                 _overlay.classList.add('red');
             } else {
@@ -197,7 +235,7 @@ const Player = (sign, name) => {
             }   
         } else if (Gameboard.isTie()) {
             document.querySelector('#winner').textContent = 'It\'s a tie!';
-            Gameboard.open(_overlay);
+            Manipulate.open(_overlay);
 
         }
     }
@@ -226,9 +264,6 @@ const error = (message) => console.log(`ERROR : ${message}`);
 
 let player1 = Player("□",'Square');
 let player2 = Player('○', "Circle");
-
-player1.setName('Player 1');
-player2.setName('Player 2');
 
 player1.isMyTurn = true;
 
