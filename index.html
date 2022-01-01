@@ -11,15 +11,24 @@
 <body>
     <header>
         <h1 class="logo">TicTacToe</h1>
+        <div class="name-board">
+            <div class="playerShower" id="player1"> <span class="sign"></span><span class="username"></span></div>
+            <div class="playerShower" id="player2"> <span class="sign"></span><span class="username"></span></div>
+        </div>
     </header>
     <main>
         <h2>
-            Player <span  id = "player"></span> 
+
+            <span  id = "player"></span> 
+            <span  id = "symbol"></span> 
 
 
         </h2>
-        <div id="overlay" class="hidden">
+        <div id= 'winner-overlay' class="overlay hidden">
             <h2 id="winner"></h2>
+        </div>
+        <div id="name-overlay" class="overlay hidden">
+            <h2></h2>
         </div>
         <div id="grid">
             

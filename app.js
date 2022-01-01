@@ -1,6 +1,13 @@
 const Gameboard = (function(){
     let _gameBoard = [] ;
     let _grid=document.querySelector('#grid');
+    let _nameBoard = document.querySelector('.name-board');
+    let _playerShower1 = _nameBoard.querySelector('#player1');
+    let _playerShower2 = _nameBoard.querySelector('#player2');
+    let _sign1 = _playerShower1.querySelector('.sign');
+    let _sign2 = _playerShower2.querySelector('.sign');
+    let _username1 = _playerShower1.querySelector('.username');
+    let _username2 = _playerShower2.querySelector('.username');
     
     
     function init(player = player1) {
@@ -20,17 +27,38 @@ const Gameboard = (function(){
         _overlay.classList.remove('red');
         _overlay.classList.add('hidden');   
     }
+
+    function showPlayers() {
+        _sign1.textContent = player1.sign;
+        _sign2.textContent = player2.sign;
+        _username1.textContent = player1.name;
+        _username2.textContent = player2.name;
+    }
+
+    function playerToPlay() {
+        return player1.isMyTurn ? player1 : player2
+    }
     
-    function showPlayer(player) {
-        let playerShower = document.querySelector('#player');
-        playerShower.innerHTML = player.sign;
-        if (player == player1) {
-            playerShower.classList.remove('blue');
-            playerShower.classList.add('red');
+    function showTurn() {
+        let symbolShower = document.querySelector('#symbol');
+        let usernameShower = document.querySelector('#player');
+        
+        symbolShower.textContent = playerToPlay().sign;
+        usernameShower.textContent = playerToPlay().name;
+        
+        if (playerToPlay() == player1) {
+            symbolShower.classList.remove('blue');
+            symbolShower.classList.add('red');
+            
         } else {
-            playerShower.classList.remove('red');
-            playerShower.classList.add('blue');
+            symbolShower.classList.remove('red');
+            symbolShower.classList.add('blue');
         }
+    }
+    function toggleTurn() {
+        player1.isMyTurn = !(player1.isMyTurn);
+        player2.isMyTurn = !(player2.isMyTurn);
+        showTurn();
     }
 
     function isWinner(){
@@ -61,24 +89,26 @@ const Gameboard = (function(){
                     cell.classList.add('red');
                 }
             }
-        }
-    
+        showPlayers();
+        showTurn();
+    }
     
     function events() {
         let cells = Array.from(_grid.querySelectorAll('.cell'));
         cells.map(cell => {
             cell.addEventListener('click', () => {
                 let id = cell.getAttribute('data-id');
-                if (player1.isMyTurn) {
-                    player1.play(id);
-                } else {
-                    player2.play(id)
-                }
+                playerToPlay().play(id);
             })
         });
+
         _overlay.addEventListener('click', () => {
             Gameboard.init();
-        })
+        });
+
+       _nameBoard.addEventListener('click', () => {
+                console.log('click')
+            });
     }
     
     function isFree(position) {
@@ -95,7 +125,9 @@ const Gameboard = (function(){
         isFree,
         write,
         events,
-        showPlayer,
+        showTurn,
+        toggleTurn,
+        showPlayers,
         isWinner,
         isTie,
     }
@@ -107,7 +139,7 @@ const Player = (sign, name) => {
 
         if (Gameboard.isFree(position)){
             Gameboard.write(position, sign)
-            toggleTurn();
+            Gameboard.toggleTurn();
         } 
         
         Gameboard.render();
@@ -115,7 +147,7 @@ const Player = (sign, name) => {
         if(winner) {
             document.querySelector('#winner').textContent = winner.name + ' wins!';
             _overlay.classList.remove('hidden');
-            if (winner == "□") {
+            if (winner.sign == "□") {
                 _overlay.classList.add('red');
             } else {
                 _overlay.classList.add('blue');
@@ -128,12 +160,17 @@ const Player = (sign, name) => {
         }
     }
 
-    const setName = (name) => this.name = name;
-    
+    if(!name) name = sign;
+
+    function setName(username){
+        this.name = username;
+    }
+
     let isMyTurn = false;
            
     return {
         play,
+        setName,
         sign,
         name,
         isMyTurn,
@@ -141,19 +178,18 @@ const Player = (sign, name) => {
 }
 
 
-const toggleTurn = () => {
-    player1.isMyTurn = !(player1.isMyTurn);
-    player2.isMyTurn = !(player2.isMyTurn);
-    if (player1.isMyTurn) Gameboard.showPlayer(player1);
-    if (player2.isMyTurn) Gameboard.showPlayer(player2);
-}
+
 
 const error = (message) => console.log(`ERROR : ${message}`);
 
-let player1 = Player("□");
-let player2 = Player('○', "okcedric");
+let player1 = Player("□",'Square');
+let player2 = Player('○', "Circle");
+
+player1.setName('Player 1');
+player2.setName('Player 2');
+
 player1.isMyTurn = true;
-Gameboard.showPlayer(player1);
-let _overlay = document.querySelector('#overlay')
+
+let _overlay = document.querySelector('#winner-overlay')
 
 Gameboard.init();
