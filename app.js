@@ -1,5 +1,8 @@
 const Gameboard = (function(){
     let _gameBoard = [] ;
+    let _overlay = document.querySelector('#winner-overlay')
+    let _overlayPlayer1 = document.querySelector('#player1-overlay');
+    let _overlayPlayer2 = document.querySelector('#player2-overlay');
     let _grid=document.querySelector('#grid');
     let _nameBoard = document.querySelector('.name-board');
     let _playerShower1 = _nameBoard.querySelector('#player1');
@@ -136,6 +139,8 @@ const Gameboard = (function(){
 const Player = (sign, name) => {
 
     const play = (position)=> {
+        let _overlay = document.querySelector('#winner-overlay');
+
 
         if (Gameboard.isFree(position)){
             Gameboard.write(position, sign)
@@ -190,6 +195,6 @@ player2.setName('Player 2');
 
 player1.isMyTurn = true;
 
-let _overlay = document.querySelector('#winner-overlay')
+
 
 Gameboard.init();

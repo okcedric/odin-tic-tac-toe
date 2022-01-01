@@ -9,6 +9,8 @@
 body{
     background-color: antiquewhite;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -33,7 +35,6 @@ main {
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 100%;
     flex: 1;
     /* justify-content: center; */
     position: relative;
@@ -113,6 +114,7 @@ main {
 .overlay {
     align-items: center;
     display: flex;
+    flex: 1;
     justify-content: center;
     position: absolute;
     color: antiquewhite;
@@ -139,6 +141,38 @@ main {
     display: none;
 }
 
+.overlay input {
+    background : none ;
+    border: none;
+    border-bottom: 1px solid antiquewhite;
+    color: antiquewhite;
+    font-size: 1.272rem;
+    font-weight: 700;
+    margin: 0rem 2rem 2rem 0;
+}
+
+.overlay input:focus {
+    border: none;
+    border-bottom: 2px solid antiquewhite;
+    outline: none;
+}
+.overlay button {
+    background-color: antiquewhite;
+    border: none;
+    font-size: 1.272rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: .5rem 1rem;
+    
+}
+
+
+.player-overlay {
+    padding: 4rem;
+    align-items: baseline;
+    flex-direction: column;
+    justify-content: baseline;
+}
 
 footer{
     align-items: center;
