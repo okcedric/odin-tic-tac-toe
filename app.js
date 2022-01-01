@@ -2,6 +2,8 @@ const Gameboard = (function(){
     let _gameBoard = [] ;
     let _overlay = document.querySelector('#winner-overlay')
     let _overlayPlayer1 = document.querySelector('#player1-overlay');
+    let _renameButton1 = document.querySelector('#rename-1');
+    let _renameButton2 = document.querySelector('#rename-2');
     let _overlayPlayer2 = document.querySelector('#player2-overlay');
     let _grid=document.querySelector('#grid');
     let _nameBoard = document.querySelector('.name-board');
@@ -95,6 +97,21 @@ const Gameboard = (function(){
         showPlayers();
         showTurn();
     }
+
+
+    function rename(player,name){
+
+        
+    }
+
+    function open(overlay) {
+        overlay.classList.remove('hidden');
+    }
+
+    function close(overlay) {
+        overlay.classList.add('hidden');
+    }
+
     
     function events() {
         let cells = Array.from(_grid.querySelectorAll('.cell'));
@@ -105,13 +122,32 @@ const Gameboard = (function(){
             })
         });
 
-        _overlay.addEventListener('click', () => {
-            Gameboard.init();
-        });
+        _overlay.addEventListener('click', Gameboard.init);
 
-       _nameBoard.addEventListener('click', () => {
-                console.log('click')
+       _playerShower1.addEventListener('click', () => {
+                open(_overlayPlayer1);
             });
+            
+        _playerShower2.addEventListener('click', () => {
+                open(_overlayPlayer2);
+            });
+
+        _renameButton1.addEventListener('click', ()=> {
+            let name = _overlayPlayer1.querySelector('input').value;
+            name ? player1.setName(name) : player1.setName('Square');
+            console.log(player1.name)
+            close(_renameButton1.parentElement);
+            render();
+        })
+        
+        _renameButton2.addEventListener('click', ()=> {
+            let name = _overlayPlayer2.querySelector('input').value;
+            name ? player2.setName(name) : player2.setName('Circle');
+            console.log(player2.name)
+            close(_renameButton2.parentElement);
+            render();
+        })
+
     }
     
     function isFree(position) {
@@ -127,6 +163,7 @@ const Gameboard = (function(){
         render,
         isFree,
         write,
+        open,
         events,
         showTurn,
         toggleTurn,
@@ -151,7 +188,7 @@ const Player = (sign, name) => {
         let winner = Gameboard.isWinner()
         if(winner) {
             document.querySelector('#winner').textContent = winner.name + ' wins!';
-            _overlay.classList.remove('hidden');
+            Gameboard.open(_overlay);
             if (winner.sign == "□") {
                 _overlay.classList.add('red');
             } else {
@@ -160,7 +197,7 @@ const Player = (sign, name) => {
             }   
         } else if (Gameboard.isTie()) {
             document.querySelector('#winner').textContent = 'It\'s a tie!';
-            _overlay.classList.remove('hidden');
+            Gameboard.open(_overlay);
 
         }
     }

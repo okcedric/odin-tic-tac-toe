@@ -146,7 +146,7 @@ main {
     border: none;
     border-bottom: 1px solid antiquewhite;
     color: antiquewhite;
-    font-size: 1.272rem;
+    font-size: 1.618rem;
     font-weight: 700;
     margin: 0rem 2rem 2rem 0;
 }
@@ -171,7 +171,6 @@ main {
     padding: 4rem;
     align-items: baseline;
     flex-direction: column;
-    justify-content: baseline;
 }
 
 footer{
