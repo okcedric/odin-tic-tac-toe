@@ -42,11 +42,12 @@ main {
 }
 
 .name-board{
-    align-items: baseline;
+    align-items: end;
     display: flex;
     flex-direction: column;
     padding: .5rem;
     cursor: pointer;
+    width: 30vh;
 }
 
 .playerShower{
@@ -54,6 +55,8 @@ main {
     font-weight: 700;
     line-height: 140%;
 }
+
+
 
 .sign{
     font-size: 1.618rem;
@@ -180,3 +183,4 @@ footer{
     display: flex;
     justify-content: center;
 }
+

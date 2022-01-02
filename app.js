@@ -11,8 +11,7 @@ const Gameboard = (function(){
     let _playerShower2 = _nameBoard.querySelector('#player2');
     let _sign1 = _playerShower1.querySelector('.sign');
     let _sign2 = _playerShower2.querySelector('.sign');
-    let _username1 = _playerShower1.querySelector('.username');
-    let _username2 = _playerShower2.querySelector('.username');
+    
     
     
     function init(player = player1) {
@@ -40,6 +39,8 @@ const Gameboard = (function(){
     }
 
     function showPlayers() {
+        let _username1 = _playerShower1.querySelector('.username');
+        let _username2 = _playerShower2.querySelector('.username');
         _sign1.textContent = player1.sign;
         _sign2.textContent = player2.sign;
         _username1.textContent = player1.name;
@@ -122,7 +123,13 @@ const Gameboard = (function(){
         _overlay.addEventListener('click', Gameboard.init);
 
        _playerShower1.addEventListener('click', ()=>Manipulate.open(_overlayPlayer1));
-            
+       console.log(_playerShower1);
+
+       _playerShower1.addEventListener('mouseover', function(){Manipulate.addIcon(this)});
+       _playerShower2.addEventListener('mouseover', function(){Manipulate.addIcon(this)});
+       _playerShower1.addEventListener('mouseout', function(){Manipulate.removeIcon(this)});
+       _playerShower2.addEventListener('mouseout', function(){Manipulate.removeIcon(this)});
+       
         _playerShower2.addEventListener('click', ()=>Manipulate.open(_overlayPlayer2));
 
         _renameButton1.addEventListener('click',() => Manipulate.rename(player1,_overlayPlayer1))
@@ -166,6 +173,23 @@ const Manipulate = function () {
     function close(overlay) {
         overlay.classList.add('hidden');
     }
+    function hasIcon(object){
+        let icon = object.querySelector('i.fa-edit')
+        return icon;
+    }
+    function addIcon(playerShower){
+       if(!hasIcon(playerShower)) {
+           let icon = '<i class="fas fa-edit"></i>';
+           playerShower.innerHTML += ' '+icon ;
+       }
+    }
+    function removeIcon(playerShower){
+        let icon = hasIcon(playerShower);
+        if (icon) {
+           icon.remove();
+        }
+    }
+
     function open(overlay) {
         overlay.classList.remove('hidden');
         let input = overlay.querySelector('input');
@@ -206,6 +230,8 @@ const Manipulate = function () {
             
         }
     return {
+        addIcon,
+        removeIcon,
         close,
         open,
         rename,
