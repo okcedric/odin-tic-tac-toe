@@ -120,25 +120,21 @@ const Gameboard = (function(){
             })
         });
 
-        _overlay.addEventListener('click', Gameboard.init);
+        _overlay.addEventListener('click', Gameboard.init);        
+        _playerShower1.addEventListener('mouseover', function(){Manipulate.addIcon(this)});//this =_playerShower
+        _playerShower2.addEventListener('mouseover', function(){Manipulate.addIcon(this)});
 
-       _playerShower1.addEventListener('click', ()=>Manipulate.open(_overlayPlayer1));
-       console.log(_playerShower1);
-
-       _playerShower1.addEventListener('mouseover', function(){Manipulate.addIcon(this)});
-       _playerShower2.addEventListener('mouseover', function(){Manipulate.addIcon(this)});
-       _playerShower1.addEventListener('mouseout', function(){Manipulate.removeIcon(this)});
-       _playerShower2.addEventListener('mouseout', function(){Manipulate.removeIcon(this)});
-       
+        _playerShower1.addEventListener('mouseout', function(){Manipulate.removeIcon(this)});
+        _playerShower2.addEventListener('mouseout', function(){Manipulate.removeIcon(this)});
+        
+        _playerShower1.addEventListener('click', ()=>Manipulate.open(_overlayPlayer1));
         _playerShower2.addEventListener('click', ()=>Manipulate.open(_overlayPlayer2));
 
-        _renameButton1.addEventListener('click',() => Manipulate.rename(player1,_overlayPlayer1))
-        
-        _renameButton2.addEventListener('click', ()=>Manipulate.rename(player2,_overlayPlayer2))
+        _renameButton1.addEventListener('click', function() {Manipulate.rename(player1,this.parentElement)})
+        _renameButton2.addEventListener('click', function() {Manipulate.rename(player2,this.parentElement)})
 
         document.addEventListener('keydown', (e) => Manipulate.whenEnter(e));
 
-        //document.addEventListener('keydown',()=> Manipulate.whenEnter());
         
        
     }
@@ -170,6 +166,8 @@ const Manipulate = function () {
     let _overlayPlayer1 = document.querySelector('#player1-overlay');
     let _overlayPlayer2 = document.querySelector('#player2-overlay');
     let _overlay = document.querySelector('#winner-overlay');
+    let _renameButton1 = document.querySelector('#rename-1');
+    let _renameButton2 = document.querySelector('#rename-2');
     function close(overlay) {
         overlay.classList.add('hidden');
     }
@@ -208,18 +206,20 @@ const Manipulate = function () {
         return(!overlay.classList.contains('hidden'))
     }
 
+    function _clickIt(target){
+        let click = new CustomEvent('click');
+        target.dispatchEvent(click);
+    }
     
 
     function whenEnter(e){
         if (e.keyCode == "13"){
-            console.log('Enter');
             if (_isOpen(_overlayPlayer1)) {
-                rename(player1,_overlayPlayer1)
-                close(_overlayPlayer1);
+                _clickIt(_renameButton1);
+
             }
             if (_isOpen(_overlayPlayer2))  {
-                rename(player2,_overlayPlayer2)
-                close(_overlayPlayer2);
+                _clickIt(_renameButton2);
             }
 
             if(_isOpen(_overlay)){
