@@ -97,9 +97,9 @@ const Gameboard = (function(){
         for (let i = 0; i < 9; i++) {
             let cell = _grid.querySelector(`[data-id = "${i}"]`);
                 cell.innerText = _gameBoard[i];
-            if (_gameBoard[i] == '○'){
+            if (_gameBoard[i] == circle){
                     cell.classList.add('blue');
-                } else if (_gameBoard[i] == '□'){
+            } else if (_gameBoard[i] == cross){
                     cell.classList.add('red');
                 }
             }
@@ -117,7 +117,14 @@ const Gameboard = (function(){
             cell.addEventListener('click', () => {
                 let id = cell.getAttribute('data-id');
                 playerToPlay().play(id);
-            })
+            });
+            cell.addEventListener('mouseover', function(){
+                Manipulate.previewPlay(this)
+            });
+            cell.addEventListener('mouseout', function(){
+                Manipulate.removePreview(this)
+            });
+            
         });
 
         _overlay.addEventListener('click', Gameboard.init);        
@@ -134,6 +141,7 @@ const Gameboard = (function(){
         _renameButton2.addEventListener('click', function() {Manipulate.rename(player2,this.parentElement)})
 
         document.addEventListener('keydown', (e) => Manipulate.whenEnter(e));
+        
 
         
        
@@ -156,6 +164,7 @@ const Gameboard = (function(){
         showTurn,
         toggleTurn,
         showPlayers,
+        playerToPlay,
         isWinner,
         isTie,
     }
@@ -211,6 +220,26 @@ const Manipulate = function () {
         target.dispatchEvent(click);
     }
     
+    function previewPlay(cell) {
+        let pos = cell.getAttribute('data-id');
+        let player = Gameboard.playerToPlay();
+        if (Gameboard.isFree(pos)) {  
+            cell.innerHTML = player.sign
+            if(player.sign == cross) cell.classList.add('red', 'dim');
+            if(player.sign == circle) cell.classList.add('blue', 'dim');
+        }
+    }
+    
+    function removePreview(cell){
+        let pos = cell.getAttribute('data-id');
+        if (Gameboard.isFree(pos)) {
+            cell.innerHTML = "";
+            cell.classList.remove('red');
+            cell.classList.remove('blue');
+        }
+        cell.classList.remove('dim')
+    }
+
 
     function whenEnter(e){
         if (e.keyCode == "13"){
@@ -236,6 +265,8 @@ const Manipulate = function () {
         open,
         rename,
         whenEnter,
+        previewPlay,
+        removePreview,
     }
 
 }();
@@ -244,7 +275,11 @@ const Player = (sign, name) => {
     const play = (position)=> {
         let _overlay = document.querySelector('#winner-overlay');
         if (Gameboard.isFree(position)){
-            Gameboard.write(position, sign)
+            Gameboard.write(position, sign);
+            let cell = document.querySelector(`[data-id = "${position}"]`);
+            console.log(cell)
+            Manipulate.removePreview(cell);
+            console.log(cell)
             Gameboard.toggleTurn();
         } 
         
@@ -253,7 +288,7 @@ const Player = (sign, name) => {
         if(winner) {
             document.querySelector('#winner').textContent = winner.name + ' wins!';
             Manipulate.open(_overlay);
-            if (winner.sign == "□") {
+            if (winner.sign == cross) {
                 _overlay.classList.add('red');
             } else {
                 _overlay.classList.add('blue');
@@ -287,9 +322,10 @@ const Player = (sign, name) => {
 
 
 const error = (message) => console.log(`ERROR : ${message}`);
-
-let player1 = Player("□",'Square');
-let player2 = Player('○', "Circle");
+let cross = '✗';
+let circle = "○";
+let player1 = Player(cross,'Cross');
+let player2 = Player(circle, "Circle");
 
 player1.isMyTurn = true;
 
