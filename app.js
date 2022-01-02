@@ -192,7 +192,7 @@ const Manipulate = function () {
         overlay.classList.remove('hidden');
         let input = overlay.querySelector('input');
         if (input) {
-           input.focus();
+           input.select();
         }
     }
     function rename(player, overlay) {
