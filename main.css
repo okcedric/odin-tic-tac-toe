@@ -1,195 +1,181 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;900&display=swap");
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
 }
-body{
-    background-color: antiquewhite;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+
+body {
+  background-color: antiquewhite;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between  ;
-    padding: 1rem;
-    text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  text-align: center;
 }
 
-h2{
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    font-size: 2.058rem;
-    font-weight: 900;
-    padding-bottom: 4rem ;
-    justify-content: center;
+h2 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 2.058rem;
+  font-weight: 900;
+  padding-bottom: 4rem;
+  justify-content: center;
 }
 
 main {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    /* justify-content: center; */
-    position: relative;
-    padding: 1rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* justify-content: center; */
+  position: relative;
+  padding: 1rem;
 }
 
-.name-board{
-    align-items: baseline;
-    display: flex;
-    flex-direction: column;
-    padding: .5rem;
-    cursor: pointer;
-    min-width: 30vh;
+.name-board {
+  align-items: baseline;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  cursor: pointer;
+  min-width: 30vh;
 }
 
-.playerShower{
-    font-size: 1.272rem;
-    font-weight: 700;
-    line-height: 140%;
+.playerShower {
+  font-size: 1.272rem;
+  font-weight: 700;
+  line-height: 140%;
 }
 
-
-
-.sign{
-    font-size: 1.618rem;
-    margin-right: .5em;
+.sign {
+  font-size: 1.618rem;
+  margin-right: 0.5em;
 }
 
 #player1 .sign {
-    color: tomato;
+  color: tomato;
 }
+
 #player2 .sign {
-    color: darkcyan;
+  color: darkcyan;
 }
 
-
-
-#grid{
-    background-color: #333;
-    height: 50vh;
-    width: 50vh;
-    display: grid;
-    gap: 3px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr  1fr;
+#grid {
+  background-color: #333;
+  height: 50vh;
+  width: 50vh;
+  display: grid;
+  gap: 3px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 
-.cell{
-    align-items: center;
-    background-color: antiquewhite;
-    font-size: 4rem;
-    display: flex;
-    justify-content: center;
-    opacity: 100%;
-    cursor: pointer;
+.cell {
+  align-items: center;
+  background-color: antiquewhite;
+  font-size: 4rem;
+  display: flex;
+  justify-content: center;
+  opacity: 100%;
+  cursor: pointer;
 }
 
-
-
-
-
-
-#symbol{
-    font-size: 6rem;
-    font-weight: 400;
-
+#symbol {
+  font-size: 6rem;
+  font-weight: 400;
 }
 
-
-#symbol.blue, .cell.blue{
-    color : darkcyan;
-    cursor: default;
-}    
-
-
-#symbol.red, .cell.red{
-    color: tomato;
-    cursor: default;
-
-}    
-
-.cell.dim.red{
-    color: #ff634760;
+#symbol.blue,
+.cell.blue {
+  color: darkcyan;
+  cursor: default;
 }
-.cell.dim.blue{
-    color: #008b8b60;
+
+#symbol.red,
+.cell.red {
+  color: tomato;
+  cursor: default;
+}
+
+.cell.dim.red {
+  color: #ff634760;
+}
+.cell.dim.blue {
+  color: #008b8b60;
 }
 
 .overlay {
-    align-items: center;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    position: absolute;
-    color: antiquewhite;
-    height: 100%;
-    width: 100%;
-    background-color: #000000CC;
-    
-    
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  position: absolute;
+  color: antiquewhite;
+  height: 100%;
+  width: 100%;
+  background-color: #000000cc;
 }
 
 .overlay h2 {
-    font-size: 2.618rem;
+  font-size: 2.618rem;
 }
 
-.overlay.blue{
-    background-color: darkcyan;
+.overlay.blue {
+  background-color: darkcyan;
 }
 
-.overlay.red{
-    background: tomato;
+.overlay.red {
+  background: tomato;
 }
 
-.overlay.hidden{
-    display: none;
+.overlay.hidden {
+  display: none;
 }
 
 .overlay input {
-    background : none ;
-    border: none;
-    border-bottom: 1px solid antiquewhite;
-    color: antiquewhite;
-    font-size: 1.618rem;
-    font-weight: 700;
-    margin: 0rem 2rem 2rem 0;
+  background: none;
+  border: none;
+  border-bottom: 1px solid antiquewhite;
+  color: antiquewhite;
+  font-size: 1.618rem;
+  font-weight: 700;
+  margin: 0rem 2rem 2rem 0;
 }
 
 .overlay input:focus {
-    border: none;
-    border-bottom: 2px solid antiquewhite;
-    outline: none;
+  border: none;
+  border-bottom: 2px solid antiquewhite;
+  outline: none;
 }
 .overlay button {
-    background-color: antiquewhite;
-    border: none;
-    font-size: 1.272rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: .5rem 1rem;
-    
+  background-color: antiquewhite;
+  border: none;
+  font-size: 1.272rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
 }
-
 
 .player-overlay {
-    padding: 4rem;
-    align-items: baseline;
-    flex-direction: column;
+  padding: 4rem;
+  align-items: baseline;
+  flex-direction: column;
 }
 
-footer{
-    align-items: center;
-    background-color: #333;
-    color: antiquewhite;
-    display: flex;
-    justify-content: center;
+footer {
+  align-items: center;
+  background-color: #333;
+  color: antiquewhite;
+  display: flex;
+  justify-content: center;
 }
-
